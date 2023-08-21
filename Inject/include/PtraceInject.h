@@ -13,7 +13,7 @@
 #include <fcntl.h>
 
 // user lib
-#include <PtraceUtils.h>
+#include <Utils/PtraceUtils.h>
 
 // TODO: 更优雅的处理SELinux问题
 // TODO: 适配armeabi-v7a和x86_64
@@ -85,7 +85,7 @@ int inject_remote_process(pid_t pid, char *LibPath, char *FunctionName, char *Fl
         dlerror_addr = get_dlerror_address(pid);
 
         // 打印一下
-        printf("[+] Get imports: dlopen: %x, dlsym: %x, dlclose: %x, dlerror: %x\n", dlopen_addr, dlsym_addr, dlclose_addr, dlerror_addr);
+        printf("[+] Get imports: dlopen: %p, dlsym: %p, dlclose: %p, dlerror: %p\n", dlopen_addr, dlsym_addr, dlclose_addr, dlerror_addr);
 
         // 打印注入so的路径
         printf("[+] LibPath = %s\n", LibPath);
