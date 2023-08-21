@@ -9,7 +9,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY
 ##################### ⬆输出文件重定向⬆ #####################
 
 ##################### ⬇FLAGS⬇ #####################
-set(CMAKE_CXX_FLAGS "-Os -flto -fmerge-all-constants -fno-exceptions -fomit-frame-pointer -fshort-enums -Wl,-O3,--lto-O3,--gc-sections,--as-needed,--icf=all,-z,norelro,--pack-dyn-relocs=android+relr")
+set(CMAKE_CXX_FLAGS "-Os -flto -fmerge-all-constants -fno-exceptions -fomit-frame-pointer -fshort-enums -w -Wl,-O3,--lto-O3,--gc-sections,--as-needed,--icf=all,-z,norelro,--pack-dyn-relocs=android+relr")
 #################### ⬆FLAGS⬆ #####################
 
 ##################### ⬇CMake头文件设置⬇ #####################
