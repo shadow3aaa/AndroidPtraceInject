@@ -10,31 +10,7 @@
 
 ## How to build
 
-- Make sure you have `CMake` and `Ninja` in your PATH
-
-- Edit CMakeLists.txt. Set [`ANDROID_NDK`](https://github.com/SsageParuders/AndroidPtraceInject/blob/dfcee37e0c302d70e81c323c326e21c7f9bfa08e/CMakeLists.txt#L12) and [`CMAKE_TOOLCHAIN_FILE`](https://github.com/SsageParuders/AndroidPtraceInject/blob/dfcee37e0c302d70e81c323c326e21c7f9bfa08e/CMakeLists.txt#L13) for yourself.
-
-- If your OS is Windows, read `build.sh` and make it to be a `build.bat`.
-
-  Also, don't forget to change [`CMAKE_RUNTIME_OUTPUT_DIRECTORY`](https://github.com/SsageParuders/AndroidPtraceInject/blob/dfcee37e0c302d70e81c323c326e21c7f9bfa08e/Inject/CMakeLists.txt#L4) and [`CMAKE_LIBRARY_OUTPUT_DIRECTORY`](https://github.com/SsageParuders/AndroidPtraceInject/blob/dfcee37e0c302d70e81c323c326e21c7f9bfa08e/Hook/CMakeLists.txt#L4) in Windows styles.
-
-- If you want to build all ABIs, u can annotation [ANDROID_ABI on CMakeLists.txt](https://github.com/SsageParuders/AndroidPtraceInject/blob/dfcee37e0c302d70e81c323c326e21c7f9bfa08e/CMakeLists.txt#L7), and run build.sh
-  ```shell
-  git clone https://github.com/SsageParuders/AndroidPtraceInject.git
-  cd AndroidPtraceInject
-  mkdir build
-  chmod +x build.sh
-  ./build.sh
-  ```
-- Or you can don't run build.sh and don't annotation [ANDROID_ABI on CMakeLists.txt](https://github.com/SsageParuders/AndroidPtraceInject/blob/dfcee37e0c302d70e81c323c326e21c7f9bfa08e/CMakeLists.txt#L7).
-  ```shell
-  git clone https://github.com/SsageParuders/AndroidPtraceInject.git
-  cd AndroidPtraceInject
-  mkdir build
-  cd build
-  cmake .. -G Ninja
-  cmake --build .
-  ```
+* just call cargo build
 
 ## How to use
 
