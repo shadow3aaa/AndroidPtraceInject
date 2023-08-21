@@ -2,7 +2,7 @@
 #include <PtraceInject.h>
 
 // 由于Inject是命令行工具 因此 替换全部的LOG为printf 以方便观察注入流程
-int main(int argc, char *argv[]) {
+extern "C" int inject_main(int argc, char *argv[]) {
 
     printf("[+] Start Inject\n");
 
