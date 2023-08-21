@@ -1,3 +1,6 @@
+cmake_minimum_required(VERSION 3.26)
+project(Inject)
+set(CMAKE_SYSTEM_NAME ANDROID)
 
 ##################### ⬇输出文件重定向⬇ #####################
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY 
@@ -5,6 +8,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY
 ) # 重定向输出产物(可执行文件)
 ##################### ⬆输出文件重定向⬆ #####################
 
+##################### ⬇CXXFLAGS⬇ #####################
+set(CMAKE_CXX_FLAGS "-Os -flto -fmerge-all-constants -fno-exceptions -fomit-frame-pointer -fshort-enums -Wl,-O3,--lto-O3,--gc-sections,--as-needed,--icf=all,-z,norelro,--pack-dyn-relocs=android+relr")
+#################### ⬆CXXFLAGS⬆ #####################
 
 ##################### ⬇CMake头文件设置⬇ #####################
 FILE(GLOB_RECURSE FILE_INCLUDES # 遍历子目录下所有符合情况的头文件
