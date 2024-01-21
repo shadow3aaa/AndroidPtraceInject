@@ -18,7 +18,9 @@ pub fn inject<S: AsRef<str>, P: AsRef<Path>>(
     handle_selinux(enforce)?;
 
     let lib = CString::new(lib.as_ref().to_str().unwrap())?;
-    let func = func.map(|s| s.as_ref().to_string()).unwrap_or("symbols".into());
+    let func = func
+        .map(|s| s.as_ref().to_string())
+        .unwrap_or("symbols".into());
     let func = CString::new(func)?;
     let enforce = CString::new(enforce)?;
     unsafe {
