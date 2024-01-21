@@ -12,12 +12,13 @@ pub fn inject<S: AsRef<str>, P: AsRef<Path>>(
     func: Option<S>,
 ) -> Result<(), InjectError> {
     let enforce = Command::new("/system/bin/getenforce").output()?;
-    let enforce = String::from_utf8_lossy(&enforce.stdout).into_owned().trim();
+    let enforce = String::from_utf8_lossy(&enforce.stdout);
+    let enforce = enforce.trim();
 
     handle_selinux(enforce)?;
 
     let lib = CString::new(lib.as_ref().to_str().unwrap())?;
-    let func = func.as_ref().unwrap_or("symbols");
+    let func = func.map(|s| s.as_ref().to_string()).unwrap_or("symbols".into());
     let func = CString::new(func)?;
     let enforce = CString::new(enforce)?;
     unsafe {

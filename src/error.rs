@@ -1,18 +1,20 @@
-use std::{io, ffi::NulError};
+use std::{ffi, io};
 
 use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum InjectError {
     #[error("Failed to inject")]
-    Failed(#[from] io::Error),
+    Failed,
+    #[error("I/O error: {source:?}")]
     Io {
         #[from]
         source: io::Error,
     },
+    #[error("Null error: {source:?}")]
     NullError {
         #[from]
-        source: NulError,
+        source: ffi::NulError,
     },
     #[error("unknown data store error")]
     Unknown,

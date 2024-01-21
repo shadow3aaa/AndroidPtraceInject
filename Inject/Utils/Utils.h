@@ -29,7 +29,7 @@ struct process_libs{
 struct process_selinux{
     const char *selinux_mnt;
     int enforce;
-} process_selinux = {nullptr, -1};
+} process_selinux = {NULL, -1};
 
 /**
  * @brief 处理各架构预定义的库文件
@@ -73,7 +73,7 @@ __unused __attribute__((constructor(101))) void handle_libs(){ // __attribute__(
 __unused __attribute__((constructor(102))) void handle_selinux_init(){ // 执行优先级 102 切记执行优先级越低 越先执行
     // code from AOSP
     char buf[BUFSIZ], *p;
-    FILE *fp = nullptr;
+    FILE *fp = NULL;
     struct statfs sfbuf;
     int rc;
     char *bufp;
@@ -101,7 +101,7 @@ __unused __attribute__((constructor(102))) void handle_selinux_init(){ // 执行
         return;
     }
 
-    while ((bufp = fgets(buf, sizeof buf - 1, fp)) != nullptr) {
+    while ((bufp = fgets(buf, sizeof buf - 1, fp)) != NULL) {
         if (strstr(buf, "selinuxfs")) {
             exists = 1;
             break;
@@ -121,7 +121,7 @@ __unused __attribute__((constructor(102))) void handle_selinux_init(){ // 执行
         goto out;
     }
 
-    while ((bufp = fgets(buf, sizeof buf - 1, fp)) != nullptr) {
+    while ((bufp = fgets(buf, sizeof buf - 1, fp)) != NULL) {
         char *tmp;
         p = strchr(buf, ' ');
         if (!p){
@@ -162,7 +162,7 @@ __unused __attribute__((constructor(103))) void handle_selinux_detect() {
 
     if (!process_selinux.selinux_mnt) { // selinux_mnt不为空
         errno = ENOENT;
-        // printf("[-] selinux_mnt is nullptr\n");
+        // printf("[-] selinux_mnt is NULL\n");
         return ;
     }
 
