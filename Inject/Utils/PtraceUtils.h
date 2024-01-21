@@ -59,11 +59,11 @@
 int ptrace_attach(pid_t pid){
     int status = 0;
     if (ptrace(PTRACE_ATTACH, pid, NULL, NULL) < 0){
-        printf("[-] ptrace attach process error, pid:%d, err:%s\n", pid, strerror(errno));
+        // printf("[-] ptrace attach process error, pid:%d, err:%s\n", pid, strerror(errno));
         return -1;
     }
 
-    printf("[+] attach porcess success, pid:%d\n", pid);
+    // printf("[+] attach porcess success, pid:%d\n", pid);
     waitpid(pid, &status, WUNTRACED);
 
     return 0;
@@ -77,11 +77,11 @@ int ptrace_attach(pid_t pid){
  */
 int ptrace_continue(pid_t pid){
     if (ptrace(PTRACE_CONT, pid, NULL, NULL) < 0){
-        printf("[-] ptrace continue process error, pid:%d, err:%ss\n", pid, strerror(errno));
+        // printf("[-] ptrace continue process error, pid:%d, err:%ss\n", pid, strerror(errno));
         return -1;
     }
 
-    printf("[+] ptrace continue process success, pid:%d\n", pid);
+    // printf("[+] ptrace continue process success, pid:%d\n", pid);
     return 0;
 }
 
@@ -93,11 +93,11 @@ int ptrace_continue(pid_t pid){
  */
 int ptrace_detach(pid_t pid){
     if (ptrace(PTRACE_DETACH, pid, NULL, 0) < 0){
-        printf("[-] detach process error, pid:%d, err:%s\n", pid, strerror(errno));
+        // printf("[-] detach process error, pid:%d, err:%s\n", pid, strerror(errno));
         return -1;
     }
 
-    printf("[+] detach process success, pid:%d\n", pid);
+    // printf("[+] detach process success, pid:%d\n", pid);
     return 0;
 }
 
@@ -116,14 +116,14 @@ int ptrace_getregs(pid_t pid, struct pt_regs *regs){
     ioVec.iov_base = regs;
     ioVec.iov_len = sizeof(*regs);
     if (ptrace(PTRACE_GETREGSET, pid, regset, &ioVec) < 0){
-        printf("[-] ptrace_getregs: Can not get register values, io %p, %lu\n", ioVec.iov_base, ioVec.iov_len);
+        // printf("[-] ptrace_getregs: Can not get register values, io %p, %lu\n", ioVec.iov_base, ioVec.iov_len);
         return -1;
     }
 
     return 0;
 #else
     if (ptrace(PTRACE_GETREGS, pid, NULL, regs) < 0){
-        printf("[-] Get Regs error, pid:%d, err:%s\n", pid, strerror(errno));
+        // printf("[-] Get Regs error, pid:%d, err:%s\n", pid, strerror(errno));
         return -1;
     }
 #endif
@@ -152,7 +152,7 @@ int ptrace_setregs(pid_t pid, struct pt_regs *regs){
     return 0;
 #else
     if (ptrace(PTRACE_SETREGS, pid, NULL, regs) < 0){
-        printf("[-] Set Regs error, pid:%d, err:%s\n", pid, strerror(errno));
+        // printf("[-] Set Regs error, pid:%d, err:%s\n", pid, strerror(errno));
         return -1;
     }
 #endif
@@ -170,7 +170,7 @@ long ptrace_getret(struct pt_regs *regs) {
 #elif defined(__arm__) || defined(__aarch64__) // 真机
     return regs->ARM_r0;
 #else
-    printf("Not supported Environment %s\n", __FUNCTION__);
+    // printf("Not supported Environment %s\n", __FUNCTION__);
 #endif
 }
 
@@ -185,7 +185,7 @@ long ptrace_getpc(struct pt_regs *regs) {
 #elif defined(__arm__) || defined(__aarch64__)
     return regs->ARM_pc;
 #else
-    printf("Not supported Environment %s\n", __FUNCTION__);
+    // printf("Not supported Environment %s\n", __FUNCTION__);
 #endif
 }
 
@@ -210,13 +210,13 @@ void *get_dlopen_address(pid_t pid) {
     memset(sdk_ver, 0, sizeof(sdk_ver));
     __system_property_get("ro.build.version.sdk", sdk_ver);
 
-    printf("[+] linker_path value:%s\n",process_libs.linker_path);
+    // printf("[+] linker_path value:%s\n",process_libs.linker_path);
     if (atoi(sdk_ver) <= 23) { // 安卓7
         dlopen_addr = get_remote_func_addr(pid, process_libs.linker_path, (void *) dlopen);
     } else {
         dlopen_addr = get_remote_func_addr(pid, process_libs.libdl_path, (void *) dlopen);
     }
-    printf("[+] dlopen RemoteFuncAddr:0x%lx\n", (uintptr_t) dlopen_addr);
+    // printf("[+] dlopen RemoteFuncAddr:0x%lx\n", (uintptr_t) dlopen_addr);
     return dlopen_addr;
 }
 
@@ -236,7 +236,7 @@ void *get_dlclose_address(pid_t pid) {
     } else {
         dlclose_addr = get_remote_func_addr(pid, process_libs.libdl_path, (void *) dlclose);
     }
-    printf("[+] dlclose RemoteFuncAddr:0x%lx\n", (uintptr_t) dlclose_addr);
+    // printf("[+] dlclose RemoteFuncAddr:0x%lx\n", (uintptr_t) dlclose_addr);
     return dlclose_addr;
 }
 
@@ -256,7 +256,7 @@ void *get_dlsym_address(pid_t pid) {
     } else {
         dlsym_addr = get_remote_func_addr(pid, process_libs.libdl_path, (void *) dlsym);
     }
-    printf("[+] dlsym RemoteFuncAddr:0x%lx\n", (uintptr_t) dlsym_addr);
+    // printf("[+] dlsym RemoteFuncAddr:0x%lx\n", (uintptr_t) dlsym_addr);
     return dlsym_addr;
 }
 
@@ -276,7 +276,7 @@ void *get_dlerror_address(pid_t pid) {
     } else {
         dlerror_addr = get_remote_func_addr(pid, process_libs.libdl_path, (void *) dlerror);
     }
-    printf("[+] dlerror RemoteFuncAddr:0x%lx\n", (uintptr_t) dlerror_addr);
+    // printf("[+] dlerror RemoteFuncAddr:0x%lx\n", (uintptr_t) dlerror_addr);
     return dlerror_addr;
 }
 
@@ -340,7 +340,7 @@ int ptrace_writedata(pid_t pid, uint8_t *pWriteAddr, uint8_t *pWriteData, size_t
     for (i = 0; i < nWriteCount; i++){
         memcpy((void *)(&lTmpBuf), pCurSrcBuf, sizeof(long));
         if (ptrace(PTRACE_POKETEXT, pid, (void *)pCurDestBuf, (void *)lTmpBuf) < 0){ // PTRACE_POKETEXT表示从远程内存空间写入一个sizeof(long)大小的数据
-            printf("[-] Write Remote Memory error, MemoryAddr:0x%lx, err:%s\n", (uintptr_t)pCurDestBuf, strerror(errno));
+            // printf("[-] Write Remote Memory error, MemoryAddr:0x%lx, err:%s\n", (uintptr_t)pCurDestBuf, strerror(errno));
             return -1;
         }
         pCurSrcBuf += sizeof(long);
@@ -351,7 +351,7 @@ int ptrace_writedata(pid_t pid, uint8_t *pWriteAddr, uint8_t *pWriteData, size_t
         lTmpBuf = ptrace(PTRACE_PEEKTEXT, pid, pCurDestBuf, NULL); //先取出原内存中的数据，然后将要写入的数据以单字节形式填充到低字节处
         memcpy((void *)(&lTmpBuf), pCurSrcBuf, nRemainCount);
         if (ptrace(PTRACE_POKETEXT, pid, pCurDestBuf, lTmpBuf) < 0){
-            printf("[-] Write Remote Memory error, MemoryAddr:0x%lx, err:%s\n", (uintptr_t)pCurDestBuf, strerror(errno));
+            // printf("[-] Write Remote Memory error, MemoryAddr:0x%lx, err:%s\n", (uintptr_t)pCurDestBuf, strerror(errno));
             return -1;
         }
     }
@@ -387,7 +387,7 @@ int ptrace_call(pid_t pid, uintptr_t ExecuteAddr, long *parameters, long num_par
 
     // 开始执行
     if (-1 == ptrace_setregs(pid, regs) || -1 == ptrace_continue(pid)){
-        printf("[-] ptrace set regs or continue error, pid:%d\n", pid);
+        // printf("[-] ptrace set regs or continue error, pid:%d\n", pid);
         return -1;
     }
 
@@ -397,10 +397,10 @@ int ptrace_call(pid_t pid, uintptr_t ExecuteAddr, long *parameters, long num_par
     waitpid(pid, &stat, WUNTRACED);
 
     // 判断是否成功执行函数
-    printf("[+] ptrace call ret status is %d\n", stat);
+    // printf("[+] ptrace call ret status is %d\n", stat);
     while (stat != 0xb7f){
         if (ptrace_continue(pid) == -1){
-            printf("[-] ptrace call error");
+            // printf("[-] ptrace call error");
             return -1;
         }
         waitpid(pid, &stat, WUNTRACED);
@@ -408,7 +408,7 @@ int ptrace_call(pid_t pid, uintptr_t ExecuteAddr, long *parameters, long num_par
 
     // 获取远程进程的寄存器值，方便获取返回值
     if (ptrace_getregs(pid, regs) == -1){
-        printf("[-] After call getregs error");
+        // printf("[-] After call getregs error");
         return -1;
     }
 
@@ -447,7 +447,7 @@ int ptrace_call(pid_t pid, uintptr_t ExecuteAddr, long *parameters, long num_par
 
     // 开始执行
     if (-1 == ptrace_setregs(pid, regs) || -1 == ptrace_continue(pid)){
-        printf("[-] ptrace set regs or continue error, pid:%d", pid);
+        // printf("[-] ptrace set regs or continue error, pid:%d", pid);
         return -1;
     }
 
@@ -457,10 +457,10 @@ int ptrace_call(pid_t pid, uintptr_t ExecuteAddr, long *parameters, long num_par
     waitpid(pid, &stat, WUNTRACED);
 
     // 判断是否成功执行函数
-    printf("ptrace call ret status is %lX\n", stat);
+    // printf("ptrace call ret status is %lX\n", stat);
     while (stat != 0xb7f){
         if (ptrace_continue(pid) == -1){
-            printf("[-] ptrace call error");
+            // printf("[-] ptrace call error");
             return -1;
         }
         waitpid(pid, &stat, WUNTRACED);
@@ -503,7 +503,7 @@ int ptrace_call(pid_t pid, uintptr_t ExecuteAddr, long *parameters, long num_par
     char sdk_ver[32];
     memset(sdk_ver, 0, sizeof(sdk_ver));
     __system_property_get("ro.build.version.sdk", sdk_ver);
-    //    printf("ro.build.version.sdk: %s", sdk_ver);
+    //    // printf("ro.build.version.sdk: %s", sdk_ver);
     if (atoi(sdk_ver) <= 23){
         lr_val = 0;
     } else { // Android 7.0
@@ -516,7 +516,7 @@ int ptrace_call(pid_t pid, uintptr_t ExecuteAddr, long *parameters, long num_par
     regs->ARM_lr = lr_val;
 
     if (ptrace_setregs(pid, regs) == -1 || ptrace_continue(pid) == -1){
-        printf("[-] ptrace set regs or continue error, pid:%d\n", pid);
+        // printf("[-] ptrace set regs or continue error, pid:%d\n", pid);
         return -1;
     }
 
@@ -527,10 +527,10 @@ int ptrace_call(pid_t pid, uintptr_t ExecuteAddr, long *parameters, long num_par
     waitpid(pid, &stat, WUNTRACED);
 
     // 判断是否成功执行函数
-    printf("[+] ptrace call ret status is %d\n", stat);
+    // printf("[+] ptrace call ret status is %d\n", stat);
     while ((stat & 0xFF) != 0x7f){
         if (ptrace_continue(pid) == -1){
-            printf("[-] ptrace call error\n");
+            // printf("[-] ptrace call error\n");
             return -1;
         }
         waitpid(pid, &stat, WUNTRACED);
@@ -538,12 +538,12 @@ int ptrace_call(pid_t pid, uintptr_t ExecuteAddr, long *parameters, long num_par
 
     // 获取远程进程的寄存器值，方便获取返回值
     if (ptrace_getregs(pid, regs) == -1){
-        printf("[-] After call getregs error\n");
+        // printf("[-] After call getregs error\n");
         return -1;
     }
 
 #else // 设备不符合注入器构架
-    printf("[-] Not supported Environment %s\n", __FUNCTION__);
+    // printf("[-] Not supported Environment %s\n", __FUNCTION__);
 #endif
     return 0;
 }

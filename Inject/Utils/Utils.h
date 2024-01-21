@@ -61,10 +61,10 @@ __unused __attribute__((constructor(101))) void handle_libs(){ // __attribute__(
         process_libs.libdl_path = "/system/lib/libdl.so";
     }
 #endif
-    printf("[+] libc_path is %s\n", process_libs.libc_path);
-    printf("[+] linker_path is %s\n", process_libs.linker_path);
-    printf("[+] libdl_path is %s\n", process_libs.libdl_path);
-    printf("[+] system libs is OK\n");
+    // printf("[+] libc_path is %s\n", process_libs.libc_path);
+    // printf("[+] linker_path is %s\n", process_libs.linker_path);
+    // printf("[+] libdl_path is %s\n", process_libs.libdl_path);
+    // printf("[+] system libs is OK\n");
 }
 
 /**
@@ -162,14 +162,14 @@ __unused __attribute__((constructor(103))) void handle_selinux_detect() {
 
     if (!process_selinux.selinux_mnt) { // selinux_mnt不为空
         errno = ENOENT;
-        printf("[-] selinux_mnt is nullptr\n");
+        // printf("[-] selinux_mnt is nullptr\n");
         return ;
     }
 
     snprintf(path, sizeof path, "%s/enforce", process_selinux.selinux_mnt);
     fd = open(path, O_RDONLY);
     if (fd < 0){ // 如果打开文件失败 那么终止
-        printf("[-] Failed to open enforce\n");
+        // printf("[-] Failed to open enforce\n");
         return ;
     }
 
@@ -177,16 +177,16 @@ __unused __attribute__((constructor(103))) void handle_selinux_detect() {
     ret = read(fd, buf, sizeof buf - 1);
     close(fd);
     if (ret < 0){ // 如果值小于0 那么返回
-        printf("[-] SELinux ret error\n");
+        // printf("[-] SELinux ret error\n");
         return ;
     }
 
     // 将buf写入到enforce
     if (sscanf(buf, "%d", (int*)&process_selinux.enforce) != 1){ // 如果失败 则终止
-        printf("[-] sscanf error\n");
+        // printf("[-] sscanf error\n");
         return ;
     }
-    printf("[+] handle_selinux_init is OK\n");
+    // printf("[+] handle_selinux_init is OK\n");
     return ;
 }
 
@@ -284,7 +284,7 @@ void get_app_start_activity(char *pkg_name, char *start_activity_name){
     int fd;
 
     if ((fd = mkstemp(temp_file)) == -1){
-        printf("[-] create tmp file failed.\n");
+        // printf("[-] create tmp file failed.\n");
     }
 
     sprintf(cmd_string, "%s > %s", cmdstring, temp_file);
@@ -292,7 +292,7 @@ void get_app_start_activity(char *pkg_name, char *start_activity_name){
 
     FILE *fp = fdopen(fd, "r");
     if (fp == NULL){
-        printf("[-] can not load file!");
+        // printf("[-] can not load file!");
         return;
     }
     char line[1024];
@@ -327,10 +327,10 @@ void get_app_start_activity(char *pkg_name, char *start_activity_name){
 void start_app(char *pkg_name){
     char start_activity_name[1024] = {0};
     get_app_start_activity(pkg_name, start_activity_name);
-    printf("[+] app_start_activity is %s\n", start_activity_name);
+    // printf("[+] app_start_activity is %s\n", start_activity_name);
     char start_cmd[1024] = "am start ";
     strcat(start_cmd, start_activity_name);
-    printf("[+] %s\n", start_cmd);
+    // printf("[+] %s\n", start_cmd);
     system(start_cmd);
 }
 
@@ -393,7 +393,7 @@ void *get_remote_func_addr(pid_t pid, const char *ModuleName, void *LocalFuncAdd
     // local_addr - local_handle的值为指定函数(如mmap)在该模块中的偏移量，然后再加上remote_handle，结果就为指定函数在目标进程的虚拟地址
     RemoteFuncAddr = (void *)((uintptr_t)LocalFuncAddr - (uintptr_t)LocalModuleAddr + (uintptr_t)RemoteModuleAddr);
 
-    printf("[+] [get_remote_func_addr] lmod=0x%p, rmod=0x%p, lfunc=0x%p, rfunc=0x%p\n", LocalModuleAddr, RemoteModuleAddr, LocalFuncAddr, RemoteFuncAddr);
+    // printf("[+] [get_remote_func_addr] lmod=0x%p, rmod=0x%p, lfunc=0x%p, rfunc=0x%p\n", LocalModuleAddr, RemoteModuleAddr, LocalFuncAddr, RemoteFuncAddr);
     return RemoteFuncAddr;
 }
 
