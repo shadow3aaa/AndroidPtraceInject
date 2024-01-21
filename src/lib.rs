@@ -1,3 +1,5 @@
+#[cfg(not(target_os = "android"))]
+compile_error!("Only for android");
 mod error;
 mod ffi;
 
