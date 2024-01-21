@@ -1,11 +1,2 @@
-# CMake
-build/
-.idea/
-.vscode/
-.DS_Store
-outputs/
-Inject/outputs/
-
-# Added by cargo
-
+/.vscode
 /target
